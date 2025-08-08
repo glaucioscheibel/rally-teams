@@ -59,6 +59,8 @@
 
 {%- if use_shenandoah_gc is defined and use_shenandoah_gc == 'true' %}
 -XX:+UseShenandoahGC
+-XX:+UseStringDeduplication
+-XX:+PrintStringDeduplicationStatistics
 {%- endif %}
 
 ## DNS cache policy
