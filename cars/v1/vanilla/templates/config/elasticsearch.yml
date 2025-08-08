@@ -28,9 +28,9 @@ node.name: {{node_name}}
 #
 # ----------------------------------- Paths ------------------------------------
 #
-# Path to directory where to store the data
+# Path to directory where to store the data (separate multiple locations by comma):
 #
-path.data: {{data_paths[0]}}
+path.data: {{data_paths}}
 #
 # Path to log files:
 #
@@ -58,36 +58,32 @@ network.host: {{network_host}}
 #
 http.port: {{http_port}}
 
-transport.port: {{transport_port}}
+transport.tcp.port: {{transport_port}}
 #
 # For more information, see the documentation at:
 # <http://www.elastic.co/guide/en/elasticsearch/reference/current/modules-network.html>
 #
 # --------------------------------- Discovery ----------------------------------
 #
-# Pass an initial list of hosts to perform discovery when this node is started:
+# Pass an initial list of hosts to perform discovery when new node is started:
 # The default list of hosts is ["127.0.0.1", "[::1]"]
 #
-{%- if all_node_ips|length > 4 %}
-  {%- if all_node_ips_count|default(2) > 1 %}
-discovery.seed_hosts: {{ all_node_ips }}
-# Prevent split brain by specifying the initial master nodes.
-    {%- if all_node_names is defined %}
-cluster.initial_master_nodes: {{ all_node_names }}
-      {%- else %}
-cluster.initial_master_nodes: {{ all_node_ips }}
-      {%- endif %}
-  {%- else %}
-discovery.type: single-node
-  {%- endif %}
+{%- if all_node_ips %}
+discovery.zen.ping.unicast.hosts: {{ all_node_ips }}
 {%- else %}
-#discovery.seed_hosts: ["host1", "host2"]
-#cluster.initial_master_nodes: ["node-name1", "node-name2"]
+#discovery.zen.ping.unicast.hosts: ["host1", "host2"]
 {%- endif %}
 {%- if discovery_type %}
 discovery.type: {{discovery_type}}
 {%- endif %}
 #
+# Prevent the "split brain" by configuring the majority of nodes (total number of nodes / 2 + 1):
+#
+{%- if minimum_master_nodes %}
+discovery.zen.minimum_master_nodes: {{ minimum_master_nodes }}
+{%- else %}
+#discovery.zen.minimum_master_nodes: 3
+{%- endif %}
 #
 # For more information, see the documentation at:
 # <http://www.elastic.co/guide/en/elasticsearch/reference/current/modules-discovery.html>
@@ -103,13 +99,9 @@ discovery.type: {{discovery_type}}
 #
 # ---------------------------------- Various -----------------------------------
 #
-# Allow wildcard deletion of indices:
+# Require explicit names when deleting indices:
 #
-action.destructive_requires_name: false
-
-{%- if indexing_pressure_memory_limit is defined %}
-indexing_pressure.memory.limit: {{indexing_pressure_memory_limit}}
-{%- endif %}
+#action.destructive_requires_name: true
 
 {# cluster settings provided from the track #}
 {%- for key, value in cluster_settings.items() %}
@@ -122,9 +114,3 @@ indexing_pressure.memory.limit: {{indexing_pressure_memory_limit}}
 {{key}}: {{value | tojson}}
 {%- endfor %}
 {%- endif %}
-
-xpack.license.self_generated.type: {{license_type|default('trial')}}
-
-xpack.ml.enabled: {{xpack_ml_enabled|default('false')}}
-xpack.security.enabled: {{xpack_security_enabled|default('false')}}
-xpack.watcher.enabled: {{xpack_watcher_enabled|default('false')}}
