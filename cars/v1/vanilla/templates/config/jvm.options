@@ -53,7 +53,13 @@
 -XX:+UseG1GC
 -XX:G1ReservePercent=25
 -XX:InitiatingHeapOccupancyPercent=30
+-XX:+UseStringDeduplication
 {%- endif %}
+
+{%- if use_shenandoah_gc is defined and use_shenandoah_gc == 'true' %}
+-XX:+UseShenandoahGC
+{%- endif %}
+
 
 ## DNS cache policy
 # cache ttl in seconds for positive DNS lookups noting that this overrides the
@@ -125,14 +131,14 @@
 
 ## JDK 8 GC logging
 
-#8:-XX:+PrintGCDetails
-#8:-XX:+PrintGCDateStamps
-#8:-XX:+PrintTenuringDistribution
-#8:-XX:+PrintGCApplicationStoppedTime
-#8:-Xloggc:${loggc}
-#8:-XX:+UseGCLogFileRotation
-#8:-XX:NumberOfGCLogFiles=32
-#8:-XX:GCLogFileSize=64m
+8:-XX:+PrintGCDetails
+8:-XX:+PrintGCDateStamps
+8:-XX:+PrintTenuringDistribution
+8:-XX:+PrintGCApplicationStoppedTime
+8:-Xloggc:${loggc}
+8:-XX:+UseGCLogFileRotation
+8:-XX:NumberOfGCLogFiles=32
+8:-XX:GCLogFileSize=64m
 
 # JDK 9+ GC logging
 #9-:-Xlog:gc*,gc+age=trace,safepoint:file=${loggc}:utctime,pid,tags:filecount=32,filesize=64m
