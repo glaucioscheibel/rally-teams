@@ -53,6 +53,8 @@
 -XX:+UseG1GC
 -XX:G1ReservePercent=25
 -XX:InitiatingHeapOccupancyPercent=30
+-XX:+UseStringDeduplication
+-XX:+PrintStringDeduplicationStatistics
 {%- endif %}
 
 ## DNS cache policy
