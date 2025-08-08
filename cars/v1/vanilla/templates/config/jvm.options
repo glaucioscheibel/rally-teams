@@ -57,6 +57,10 @@
 -XX:+PrintStringDeduplicationStatistics
 {%- endif %}
 
+{%- if use_shenandoah_gc is defined and use_shenandoah_gc == 'true' %}
+-XX:+UseShenandoahGC
+{%- endif %}
+
 ## DNS cache policy
 # cache ttl in seconds for positive DNS lookups noting that this overrides the
 # JDK security property networkaddress.cache.ttl; set to -1 to cache forever
