@@ -39,7 +39,10 @@
 -XX:+UseCMSInitiatingOccupancyOnly
 
 {%- elif use_g1_gc is defined and use_g1_gc == 'true' %}
--XX:+UseG1GC
+-XX:+UseG1GC -XX:+UseStringDeduplication
+
+{%- elif use_shenandoah_gc is defined and use_shenandoah_gc == 'true' %}
+-XX:+UseShenandoahGC
 
 {%- elif use_parallel_gc is defined and use_parallel_gc == 'true' %}
 -XX:+UseParallelGC
@@ -91,6 +94,8 @@
 {%- else %}
 # ${error.file}
 {%- endif %}
+
+-Xloggc:{{log_path}}/gc.log -XX:+PrintGCDetails
 
 {%- if additional_java_settings is defined %}
 {%- for value in additional_java_settings %}
