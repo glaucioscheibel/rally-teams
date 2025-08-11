@@ -66,7 +66,7 @@
 -XX:+PrintStringDeduplicationStatistics
 {%- endif %}
 
-{%- if use_thp is defined and use_thp == 'true' %}
+{%- if use_lp is defined and use_lp == 'true' %}
 -XX:+UseLargePages
 {%- endif %}
 
