@@ -68,6 +68,7 @@
 
 {%- if use_lp is defined and use_lp == 'true' %}
 -XX:+UseLargePages
+-XX:+UseTransparentHugePages
 {%- endif %}
 
 ## DNS cache policy
