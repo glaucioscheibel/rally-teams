@@ -71,6 +71,10 @@
 -XX:+UseTransparentHugePages
 {%- endif %}
 
+{%- if use_numa is defined and use_numa == 'true' %}
+-XX:+UseNUMA
+{%- endif %}
+
 ## DNS cache policy
 # cache ttl in seconds for positive DNS lookups noting that this overrides the
 # JDK security property networkaddress.cache.ttl; set to -1 to cache forever
