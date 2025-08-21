@@ -51,13 +51,14 @@
 
 {%- if use_g1_gc is defined and use_g1_gc == 'true' %}
 -XX:+UseG1GC
--XX:G1ReservePercent=20
+-XX:G1ReservePercent=10
 -XX:InitiatingHeapOccupancyPercent=50
 -XX:MaxGCPauseMillis=500
 -XX:ParallelGCThreads=32
 -XX:ConcGCThreads=10
 -XX:+UseStringDeduplication
 -XX:+PrintStringDeduplicationStatistics
+-XX:MaxDirectMemorySize=27g
 {%- endif %}
 
 {%- if use_shenandoah_gc is defined and use_shenandoah_gc == 'true' %}
@@ -146,6 +147,7 @@
 ## JDK 8 GC logging
 
 8:-XX:+PrintGCDetails
+8:-XX:+PrintGCDateStamps
 8:-XX:+PrintGCDateStamps
 8:-XX:+PrintTenuringDistribution
 8:-XX:+PrintGCApplicationStoppedTime
